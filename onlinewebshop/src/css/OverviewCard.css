@@ -1,0 +1,27 @@
+.product-overview {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.product-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eef2f7;
+}
+
+.product-overview-header h2 {
+    color: #1a237e;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}

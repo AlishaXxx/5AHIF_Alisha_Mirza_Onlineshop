@@ -1,6 +1,6 @@
 import React from 'react';
 import LineItem from './LineItem';
-import './Cart.css';
+import './css/Cart.css';
 
 function Cart({ cartItems, updateQuantity, removeFromCart, cartTotal }) {
     return (
