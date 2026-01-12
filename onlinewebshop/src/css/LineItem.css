@@ -1,0 +1,114 @@
+.line-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+    background: #f0f7f4;  /* Grüner Hintergrund wie im Screenshot */
+    border-radius: 8px;
+    align-items: center;
+    border-left: 4px solid #4caf50;
+    transition: all 0.2s;
+}
+
+.line-item:hover {
+    background: #e8f4ef;
+    transform: translateX(5px);
+}
+
+/* Item Column */
+.item-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.item-name {
+    font-weight: 700;
+    color: #1a237e;
+    font-size: 1.1rem;
+}
+
+.item-status {
+    font-size: 0.85rem;
+    color: #4caf50;
+    font-weight: 600;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    width: fit-content;
+}
+
+/* Quantity Column */
+.quantity-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.quantity-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.quantity-btn:hover {
+    background: #e0e0e0;
+}
+
+.quantity-value {
+    font-weight: 700;
+    min-width: 30px;
+    text-align: center;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #f44336;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    background: rgba(244, 67, 54, 0.1);
+}
+
+/* Price Column */
+.price-column {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: center;
+}
+
+/* Total Column */
+.total-column {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #3f51b5;
+    text-align: right;
+}
