@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard';
-import './ProductOverview.css';
+import './css/ProductOverview.css';
 
 function ProductOverview({ products, addToCart }) {
     return (

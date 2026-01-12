@@ -1,5 +1,5 @@
 import React from 'react';
-import './LineItem.css';
+import './css/LineItem.css';
 
 function LineItem({ item, updateQuantity, removeFromCart }) {
     const itemTotal = (item.price * item.quantity).toFixed(2);

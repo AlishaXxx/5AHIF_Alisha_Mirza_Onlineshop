@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import ProductOverview from './components/ProductOverview';
+import Cart from './components/Cart';
 
 function App() {
     const [cartItems, setCartItems] = useState([
@@ -21,6 +23,16 @@ function App() {
         { id: 11, name: 'Construction Crane', price: 59.99, category: 'Construction', image: '🏗️' }
     ];
 
+    // Ändere den Dokument-Titel wie im LEGO Beispiel
+    useEffect(() => {
+        const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        if (count === 0) {
+            document.title = "1800 Store";
+        } else {
+            document.title = `1800 Store (${count})`;
+        }
+    }, [cartItems]);
+
     const addToCart = (product) => {
         setCartItems(prevItems => {
             const existingItem = prevItems.find(item => item.id === product.id);
@@ -40,130 +52,66 @@ function App() {
         });
     };
 
-    const updateQuantity = (id, newQuantity) => {
-        if (newQuantity < 1) {
-            removeFromCart(id);
-            return;
-        }
-
-        setCartItems(prevItems =>
-            prevItems.map(item =>
-                item.id === id ? { ...item, quantity: newQuantity } : item
-            )
-        );
+    // Funktionen wie im LEGO Beispiel: removeOne und removeAll
+    const handleRemoveOne = (productId) => {
+        setCartItems(prevItems => {
+            return prevItems
+                .map(item =>
+                    item.id === productId
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                )
+                .filter(item => item.quantity > 0);
+        });
     };
 
-    const removeFromCart = (id) => {
-        setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    const handleRemoveAll = (productId) => {
+        setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
     };
 
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 
     return (
         <div className="app">
+            {/* Header wie im LEGO Beispiel mit Navigation */}
             <header className="header">
-                <h1 className="store-title">1800 Store</h1>
-                <div className="header-info">
-                    <span className="product-count">Produkte {products.length}</span>
-                    <div className="cart-summary">
-                        🛒 Warenkorb ({cartItems.reduce((sum, item) => sum + item.quantity, 0)})
-                    </div>
+                <div className="logo-area">
+                    <div className="store-square">1800</div>
+                    <span className="store-title">Store</span>
                 </div>
+
+                <nav className="nav">
+                    <a href="#products">Products</a>
+                    <a href="#cart">
+                        Cart <span className="cart-badge">{cartCount}</span>
+                    </a>
+                </nav>
             </header>
 
-            <div className="main-content">
-                <div className="product-overview">
-                    <div className="product-overview-header">
-                        <h2>Product Overview</h2>
-                    </div>
+            <main>
+                {/* Products Section */}
+                <section id="products">
+                    <ProductOverview
+                        products={products}
+                        onAddToCart={addToCart}
+                    />
+                </section>
 
-                    <div className="products-grid">
-                        {products.map(product => (
-                            <div key={product.id} className="product-card">
-                                <div className="product-image">
-                                    <span className="product-emoji">{product.image}</span>
-                                </div>
-                                <div className="product-info">
-                                    <h3 className="product-name">{product.name}</h3>
-                                    <p className="product-category">{product.category}</p>
-                                    <div className="product-price">${product.price.toFixed(2)}</div>
-                                    <button className="view-details-btn">View Details</button>
-                                    <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
-                                        Add to cart
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                {/* Cart Section */}
+                <section id="cart">
+                    <Cart
+                        items={cartItems}
+                        onRemoveOne={handleRemoveOne}
+                        onRemoveAll={handleRemoveAll}
+                        cartTotal={cartTotal}
+                    />
+                </section>
+            </main>
 
-                <div className="cart">
-                    <h2 className="cart-title">Your Shopping Cart</h2>
-
-                    <div className="cart-table">
-                        <div className="cart-header">
-                            <div className="header-item">Item</div>
-                            <div className="header-quantity">Quantity</div>
-                            <div className="header-price">Price</div>
-                            <div className="header-total">Item Total</div>
-                        </div>
-
-                        <div className="cart-items">
-                            {cartItems.map(item => {
-                                const itemTotal = (item.price * item.quantity).toFixed(2);
-                                return (
-                                    <div key={item.id} className="line-item">
-                                        <div className="item-column">
-                                            <div className="item-name">{item.name}</div>
-                                            <div className="item-status">{item.status}</div>
-                                        </div>
-
-                                        <div className="quantity-column">
-                                            <div className="quantity-controls">
-                                                <button
-                                                    className="quantity-btn"
-                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                >
-                                                    -
-                                                </button>
-                                                <span className="quantity-value">{item.quantity}</span>
-                                                <button
-                                                    className="quantity-btn"
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                            <button
-                                                className="remove-btn"
-                                                onClick={() => removeFromCart(item.id)}
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-
-                                        <div className="price-column">
-                                            ${item.price.toFixed(2)}
-                                        </div>
-
-                                        <div className="total-column">
-                                            ${itemTotal}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        <div className="cart-footer">
-                            <div className="total-section">
-                                <span className="total-label">Total:</span>
-                                <span className="total-amount">${cartTotal.toFixed(2)}</span>
-                            </div>
-                            <button className="checkout-btn">Proceed to Checkout</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <footer className="footer">
+                1800 Online Shop - Alisha Mirza
+            </footer>
         </div>
     );
 }
