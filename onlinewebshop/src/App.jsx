@@ -23,7 +23,7 @@ function App() {
         { id: 11, name: 'Construction Crane', price: 59.99, category: 'Construction', image: '🏗️' }
     ];
 
-    // Ändere den Dokument-Titel wie im LEGO Beispiel
+    // Ändere den Dokument-Titel
     useEffect(() => {
         const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
         if (count === 0) {
@@ -52,7 +52,7 @@ function App() {
         });
     };
 
-    // Funktionen wie im LEGO Beispiel: removeOne und removeAll
+    // Funktionen zum Entfernen von Artikeln
     const handleRemoveOne = (productId) => {
         setCartItems(prevItems => {
             return prevItems
@@ -69,15 +69,34 @@ function App() {
         setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
     };
 
+    // Funktion für Checkout
+    const handleCheckout = () => {
+        if (cartItems.length === 0) return;
+
+        // Bestätigungsdialog
+        const confirmCheckout = window.confirm(
+            `Möchten Sie mit dem Checkout fortfahren?\n\nGesamtbetrag: $${cartTotal.toFixed(2)}\nAnzahl Artikel: ${cartItems.reduce((sum, item) => sum + item.quantity, 0)}`
+        );
+
+        if (confirmCheckout) {
+            // Hier würde normalerweise eine API-Aufruf erfolgen
+            setTimeout(() => {
+                alert('Checkout erfolgreich! Vielen Dank für Ihren Einkauf.');
+                // Warenkorb leeren nach erfolgreichem Checkout
+                setCartItems([]);
+            }, 1000);
+        }
+    };
+
     const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 
     return (
         <div className="app">
-            {/* Header wie im LEGO Beispiel mit Navigation */}
+            {/* Header */}
             <header className="header">
                 <div className="logo-area">
-                    <div className="store-square">1800</div>
+                    <div className="store-square">Logo</div>
                     <span className="store-title">Store</span>
                 </div>
 
@@ -94,24 +113,22 @@ function App() {
                 <section id="products">
                     <ProductOverview
                         products={products}
-                        onAddToCart={addToCart}
+                        addToCart={addToCart}
                     />
                 </section>
 
                 {/* Cart Section */}
                 <section id="cart">
                     <Cart
-                        items={cartItems}
-                        onRemoveOne={handleRemoveOne}
-                        onRemoveAll={handleRemoveAll}
+                        cartItems={cartItems}
+                        updateQuantity={handleRemoveOne}
+                        removeFromCart={handleRemoveAll}
                         cartTotal={cartTotal}
+                        onCheckout={handleCheckout}
                     />
                 </section>
             </main>
 
-            <footer className="footer">
-                1800 Online Shop - Alisha Mirza
-            </footer>
         </div>
     );
 }
